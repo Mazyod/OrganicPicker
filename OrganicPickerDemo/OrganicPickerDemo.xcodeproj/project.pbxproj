@@ -14,6 +14,8 @@
 		8202C2421A11B99D00C22E0A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8202C2401A11B99D00C22E0A /* LaunchScreen.xib */; };
 		8202C24E1A11B99D00C22E0A /* OrganicPickerDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8202C24D1A11B99D00C22E0A /* OrganicPickerDemoTests.swift */; };
 		8202C2591A11B9EE00C22E0A /* OrganicPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8202C2581A11B9EE00C22E0A /* OrganicPicker.swift */; };
+		8202C25D1A125EC800C22E0A /* OrganicPickerSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8202C25C1A125EC800C22E0A /* OrganicPickerSettingsCell.swift */; };
+		8202C25F1A125EDE00C22E0A /* OrganicPickerSettingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8202C25E1A125EDE00C22E0A /* OrganicPickerSettingsCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,8 @@
 		8202C24C1A11B99D00C22E0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8202C24D1A11B99D00C22E0A /* OrganicPickerDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganicPickerDemoTests.swift; sourceTree = "<group>"; };
 		8202C2581A11B9EE00C22E0A /* OrganicPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganicPicker.swift; sourceTree = "<group>"; };
+		8202C25C1A125EC800C22E0A /* OrganicPickerSettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganicPickerSettingsCell.swift; sourceTree = "<group>"; };
+		8202C25E1A125EDE00C22E0A /* OrganicPickerSettingsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrganicPickerSettingsCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,8 @@
 		8202C2341A11B99D00C22E0A /* OrganicPickerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				8202C25C1A125EC800C22E0A /* OrganicPickerSettingsCell.swift */,
+				8202C25E1A125EDE00C22E0A /* OrganicPickerSettingsCell.xib */,
 				8202C2371A11B99D00C22E0A /* AppDelegate.swift */,
 				8202C2391A11B99D00C22E0A /* ViewController.swift */,
 				8202C23B1A11B99D00C22E0A /* Main.storyboard */,
@@ -204,6 +210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8202C25F1A125EDE00C22E0A /* OrganicPickerSettingsCell.xib in Resources */,
 				8202C23D1A11B99D00C22E0A /* Main.storyboard in Resources */,
 				8202C2421A11B99D00C22E0A /* LaunchScreen.xib in Resources */,
 				8202C23F1A11B99D00C22E0A /* Images.xcassets in Resources */,
@@ -224,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8202C25D1A125EC800C22E0A /* OrganicPickerSettingsCell.swift in Sources */,
 				8202C2591A11B9EE00C22E0A /* OrganicPicker.swift in Sources */,
 				8202C23A1A11B99D00C22E0A /* ViewController.swift in Sources */,
 				8202C2381A11B99D00C22E0A /* AppDelegate.swift in Sources */,
