@@ -37,6 +37,8 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
     /* required UICollectionViewCell subclass to display your item */
     var collectionViewCellClass: AnyClass? {
         didSet {
+            collectionViewCellReuseIdentifier = collectionViewCellClass!.description()
+            
             collectionView.registerClass(
                 collectionViewCellClass,
                 forCellWithReuseIdentifier: collectionViewCellReuseIdentifier
@@ -127,22 +129,20 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
         commonInit()
     }
     
-    private func commonInit() {
+    func commonInit() {
         
         clipsToBounds = true
         
         collectionViewLayout.scrollDirection = .Horizontal
         
         let collectionView = self.collectionView
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        dispatch_async(dispatch_get_main_queue(), { 
             collectionView.backgroundColor = UIColor.clearColor()
             collectionView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
             collectionView.showsHorizontalScrollIndicator = false
             collectionView.scrollsToTop = false
             collectionView.delegate = self
             collectionView.dataSource = self
-            
-            collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
             
             self.addSubview(collectionView)
             
