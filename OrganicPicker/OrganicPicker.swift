@@ -78,6 +78,7 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
         didSet {
             oldValue?.removeFromSuperview()
             if let view = foregroundView {
+                view.frame = bounds
                 view.userInteractionEnabled = false
                 addSubview(view)
             }
