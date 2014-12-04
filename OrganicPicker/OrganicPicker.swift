@@ -38,30 +38,6 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         }
     }
     
-    /* required UICollectionViewCell subclass to display your item */
-    var collectionViewCellClass: AnyClass? {
-        didSet {
-            collectionViewCellReuseIdentifier = collectionViewCellClass!.description()
-            
-            collectionViewController.collectionView!.registerClass(
-                collectionViewCellClass,
-                forCellWithReuseIdentifier: collectionViewCellReuseIdentifier
-            )
-        }
-    }
-    
-    var collectionViewCellNib: UINib? {
-        didSet {
-            let cell = collectionViewCellNib?.instantiateWithOwner(nil, options: nil)[0] as UICollectionViewCell
-            collectionViewCellReuseIdentifier = cell.reuseIdentifier
-            
-            collectionViewController.collectionView!.registerNib(
-                collectionViewCellNib,
-                forCellWithReuseIdentifier: collectionViewCellReuseIdentifier
-            )
-        }
-    }
-    
     var selectedIndex: Int = 0 {
         didSet {
             
@@ -88,8 +64,6 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
             layer.masksToBounds = true
         }
     }
-        
-    var collectionViewCellReuseIdentifier = "Cell"
     
     /** Organic picker can be customized by subclassing, delegation, or closures.
      *  Name your poison, and name it wisely.
@@ -123,14 +97,6 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     }
     
     
-    // MARK: - Private methods
-    
-    private func collectionViewScrollCallback(index: Int) {
-        
-        selectedIndex = index
-        sendActionsForControlEvents(.ValueChanged)
-    }
-    
     // MARK: - View lifecycle
     
     override func layoutSubviews() {
@@ -145,32 +111,12 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         
     }
 
+    // MARK: - OrganicCollectionViewDelegate
     
-    // MARK: - UICollectionViewDataSource methods
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
-    }
-
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func organicCollectionViewStopped(atIndex index: Int) {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            collectionViewCellReuseIdentifier,
-            forIndexPath: indexPath
-        ) as UICollectionViewCell
-        
-        if let organicCell = cell as? OrganicPickerCell {
-            organicCell.setOrganicItem(items[indexPath.item])
-        }
-        else {
-            assertionFailure("Registered Cell must conform to OrganicPickerCell protocol")
-        }
-        
-        return cell 
+        selectedIndex = index
+        sendActionsForControlEvents(.ValueChanged)
     }
     
 }
