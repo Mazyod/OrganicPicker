@@ -74,10 +74,11 @@ class OrganicCollectionViewController: UICollectionViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     // MARK: - View Lifecycle
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         view.frame = view.superview!.bounds
         
@@ -90,9 +91,8 @@ class OrganicCollectionViewController: UICollectionViewController {
         
         let indexPath = NSIndexPath(forItem: delegate.selectedIndex, inSection: 0)
         collectionView!.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
-
     }
-    
+        
     // MARK: - Private methods
     
     private func scrollViewStopped() {
@@ -141,7 +141,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         }
     }
     
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {        
+    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         scrollViewStopped();
     }
     
