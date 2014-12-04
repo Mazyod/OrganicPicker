@@ -135,16 +135,13 @@ class OrganicCollectionViewController: UICollectionViewController {
     // MARK: - UIScrollViewDelegate methods
     
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        super.scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
         
         if !decelerate {
             scrollViewStopped();
         }
     }
     
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        super.scrollViewDidEndDecelerating(scrollView)
-        
+    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {        
         scrollViewStopped();
     }
     
