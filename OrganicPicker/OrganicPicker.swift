@@ -25,12 +25,16 @@ private extension CGRect {
     func setOrganicItem(item: AnyObject)
 }
 
-class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSource {
+class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
+    
+    lazy var collectionViewController: OrganicCollectionViewController = {
+        OrganicCollectionViewController(delegate: self)
+    }()
     
     /* items are displayed within the picker. Can be anything */
     var items: [AnyObject] = [] {
         didSet {
-            collectionView.reloadData()
+            collectionViewController.collectionView?.reloadData()
         }
     }
     
@@ -39,7 +43,7 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
         didSet {
             collectionViewCellReuseIdentifier = collectionViewCellClass!.description()
             
-            collectionView.registerClass(
+            collectionViewController.collectionView!.registerClass(
                 collectionViewCellClass,
                 forCellWithReuseIdentifier: collectionViewCellReuseIdentifier
             )
@@ -51,7 +55,7 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
             let cell = collectionViewCellNib?.instantiateWithOwner(nil, options: nil)[0] as UICollectionViewCell
             collectionViewCellReuseIdentifier = cell.reuseIdentifier
             
-            collectionView.registerNib(
+            collectionViewController.collectionView!.registerNib(
                 collectionViewCellNib,
                 forCellWithReuseIdentifier: collectionViewCellReuseIdentifier
             )
@@ -60,14 +64,7 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
     
     var selectedIndex: Int = 0 {
         didSet {
-            let indexPath = NSIndexPath(forItem: selectedIndex, inSection: 0)
-            let attributes = collectionViewLayout.layoutAttributesForItemAtIndexPath(indexPath)
-            let offset = CGPoint(
-                x: attributes.center.x - collectionView.bounds.width / 2,
-                y: collectionView.contentOffset.y
-            )
             
-            collectionView.setContentOffset(offset, animated: true)
         }
     }
     
@@ -91,16 +88,7 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
             layer.masksToBounds = true
         }
     }
-    
-    let collectionView: UICollectionView = UICollectionView(
-        frame: CGRect(x: 0, y: 0, width: 100, height: 100),
-        collectionViewLayout: UICollectionViewFlowLayout()
-    )
-    
-    var collectionViewLayout: UICollectionViewFlowLayout {
-        return collectionView.collectionViewLayout as UICollectionViewFlowLayout
-    }
-    
+        
     var collectionViewCellReuseIdentifier = "Cell"
     
     /** Organic picker can be customized by subclassing, delegation, or closures.
@@ -109,8 +97,6 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
 
     /* Delegation */
     var dataSource: OrganicPickerDataSource?
-    
-    /* Closures */
     
     
     // MARK: - Initialization
@@ -131,36 +117,16 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func commonInit() {
-        
         clipsToBounds = true
         
-        collectionViewLayout.scrollDirection = .Horizontal
-        
-        let collectionView = self.collectionView
-        dispatch_async(dispatch_get_main_queue(), { 
-            collectionView.backgroundColor = UIColor.clearColor()
-            collectionView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
-            collectionView.showsHorizontalScrollIndicator = false
-            collectionView.scrollsToTop = false
-            collectionView.delegate = self
-            collectionView.dataSource = self
-            
-            self.addSubview(collectionView)
-            
-            collectionView.reloadData()
-        })
+        addSubview(collectionViewController.view)
     }
     
     
     // MARK: - Private methods
     
-    private func scrollViewStopped() {
+    private func collectionViewScrollCallback(index: Int) {
         
-        let xOffset = collectionView.contentOffset.x
-        let containerWidth = collectionViewLayout.itemSize.width + collectionViewLayout.minimumInteritemSpacing
-        let roundedOffset = round((xOffset + (collectionView.bounds.width - containerWidth)/2) / containerWidth) * containerWidth;
-        let index = Int(round(roundedOffset / containerWidth))
-
         selectedIndex = index
         sendActionsForControlEvents(.ValueChanged)
     }
@@ -177,14 +143,6 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
             bringSubviewToFront(view)
         }
         
-        collectionView.frame = self.bounds
-        
-        let itemLength = bounds.height
-        collectionViewLayout.itemSize = CGSize(width: itemLength, height: itemLength)
-
-        // this allows the first/last element to be centered in the scrollView
-        let inset = (bounds.width - itemLength) / 2
-        collectionView.contentInset = UIEdgeInsetsMake(0, inset, 0, inset)
     }
 
     
@@ -215,18 +173,4 @@ class OrganicPicker: UIControl, UICollectionViewDelegate, UICollectionViewDataSo
         return cell 
     }
     
-    // MARK: - UICollectionViewDelegate methods
-    
-    // MARK: - UIScrollViewDelegate methods
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            scrollViewStopped();
-        }
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        scrollViewStopped();
-    }
-
 }
