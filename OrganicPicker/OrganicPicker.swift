@@ -40,7 +40,8 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
     var selectedIndex: Int = 0 {
         didSet {
-            
+            let indexPath = NSIndexPath(forItem: selectedIndex, inSection: 0)
+            collectionViewController.selectedIndexPath = indexPath
         }
     }
     
@@ -108,7 +109,6 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         if let view = foregroundView {
             bringSubviewToFront(view)
         }
-        
     }
 
     // MARK: - OrganicCollectionViewDelegate

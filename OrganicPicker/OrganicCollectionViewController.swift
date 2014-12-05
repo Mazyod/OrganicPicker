@@ -22,6 +22,17 @@ class OrganicCollectionViewController: UICollectionViewController {
 
     unowned let delegate: OrganicCollectionViewControllerDelegate
     
+    var deferLayout = false
+    
+    var selectedIndexPath: NSIndexPath = NSIndexPath() {
+        didSet {
+            
+            if !scrollToSelectedIndexPath(animated: true) {
+                deferLayout = true
+            }
+        }
+    }
+    
     var flowLayout: UICollectionViewFlowLayout {
         return collectionViewLayout as UICollectionViewFlowLayout
     }
@@ -88,12 +99,34 @@ class OrganicCollectionViewController: UICollectionViewController {
         // this allows the first/last element to be centered in the scrollView
         let inset = (view.bounds.width - itemLength) / 2
         collectionView!.contentInset = UIEdgeInsetsMake(0, inset, 0, inset)
-        
-        let indexPath = NSIndexPath(forItem: delegate.selectedIndex, inSection: 0)
-        collectionView!.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
+        if deferLayout && scrollToSelectedIndexPath(animated: false) {
+            deferLayout = false
+        }
+    }
+    
     // MARK: - Private methods
+    
+    private func scrollToSelectedIndexPath(#animated: Bool) -> Bool {
+        
+        let attributes = flowLayout.layoutAttributesForItemAtIndexPath(selectedIndexPath)
+        
+        if attributes.center == CGPoint.zeroPoint {
+            return false
+        }
+        
+        let offset = CGPoint(
+            x: attributes.center.x - collectionView!.bounds.width / 2,
+            y: collectionView!.contentOffset.y
+        )
+        
+        collectionView!.setContentOffset(offset, animated: animated)
+        return true
+    }
     
     private func scrollViewStopped() {
         
