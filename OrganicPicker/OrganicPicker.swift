@@ -95,6 +95,11 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         clipsToBounds = true
         
         addSubview(collectionViewController.view)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: "controlTapped:")
+        tapGesture.requireGestureRecognizerToFail(collectionViewController.collectionView!.panGestureRecognizer)
+        
+        addGestureRecognizer(tapGesture)
     }
     
     
@@ -109,6 +114,17 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         if let view = foregroundView {
             bringSubviewToFront(view)
         }
+    }
+    
+    // MARK: - Action
+    func controlTapped(gesture: UITapGestureRecognizer) {
+        
+        if items.count != 2 {
+            return
+        }
+        
+        selectedIndex = (selectedIndex + 1) % 2
+        sendActionsForControlEvents(.ValueChanged)
     }
 
     // MARK: - OrganicCollectionViewDelegate
