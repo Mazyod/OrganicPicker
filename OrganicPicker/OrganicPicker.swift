@@ -117,6 +117,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     }
     
     // MARK: - Action
+    
     func controlTapped(gesture: UITapGestureRecognizer) {
         
         if items.count != 2 {
