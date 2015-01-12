@@ -132,7 +132,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         
         let xOffset = collectionView!.contentOffset.x
         let containerWidth = flowLayout.itemSize.width + flowLayout.minimumInteritemSpacing
-        let roundedOffset = round((xOffset + (collectionView!.bounds.width - containerWidth)/2) / containerWidth) * containerWidth;
+        let roundedOffset = round((xOffset + (collectionView!.bounds.width - containerWidth)/2) / containerWidth) * containerWidth
         let index = Int(round(roundedOffset / containerWidth))
         
         delegate.organicCollectionViewStopped(atIndex: index)
@@ -170,12 +170,12 @@ class OrganicCollectionViewController: UICollectionViewController {
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
         if !decelerate {
-            scrollViewStopped();
+            scrollViewStopped()
         }
     }
     
     override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        scrollViewStopped();
+        scrollViewStopped()
     }
     
 }
