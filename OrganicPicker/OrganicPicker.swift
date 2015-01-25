@@ -108,6 +108,10 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        if collectionViewController.view.bounds.size != bounds.size {
+            collectionViewController.view.frame = bounds
+        }
+        
         maskingLayer?.frame = bounds
         foregroundView?.frame = bounds
         

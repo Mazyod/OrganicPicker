@@ -92,17 +92,21 @@ class OrganicCollectionViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         
         view.frame = view.superview!.bounds
-        
-        let itemLength = view.bounds.height
-        flowLayout.itemSize = CGSize(width: itemLength, height: itemLength)
-        
-        // this allows the first/last element to be centered in the scrollView
-        let inset = (view.bounds.width - itemLength) / 2
-        collectionView!.contentInset = UIEdgeInsetsMake(0, inset, 0, inset)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        let itemLength = view.bounds.height
+        if itemLength != flowLayout.itemSize.height {
+            flowLayout.itemSize = CGSize(width: itemLength, height: itemLength)
+            flowLayout.invalidateLayout()
+            
+            // this allows the first/last element to be centered in the scrollView
+            let inset = (view.bounds.width - itemLength) / 2
+            collectionView!.contentInset = UIEdgeInsetsMake(0, inset, 0, inset)
+        }
+        
         
         if deferLayout && scrollToSelectedIndexPath(animated: false) {
             deferLayout = false
