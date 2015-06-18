@@ -34,7 +34,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     }
     
     var flowLayout: UICollectionViewFlowLayout {
-        return collectionViewLayout as UICollectionViewFlowLayout
+        return collectionViewLayout as! UICollectionViewFlowLayout
     }
     
     var collectionViewCellReuseIdentifier = "Cell"
@@ -53,7 +53,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     var cellNib: UINib? {
         didSet {
-            let cell = cellNib?.instantiateWithOwner(nil, options: nil)[0] as UICollectionViewCell
+            let cell = cellNib?.instantiateWithOwner(nil, options: nil)[0] as! UICollectionViewCell
             collectionViewCellReuseIdentifier = cell.reuseIdentifier
             
             collectionView!.registerNib(
@@ -157,7 +157,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
             collectionViewCellReuseIdentifier,
             forIndexPath: indexPath
-            ) as UICollectionViewCell
+            ) as! UICollectionViewCell
         
         if let organicCell = cell as? OrganicPickerCell {
             organicCell.setOrganicItem(delegate.items[indexPath.item])

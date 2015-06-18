@@ -81,14 +81,13 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         commonInit()
     }
     
-    required override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
     
-    required override init() {
-        super.init()
-        commonInit()
+    convenience init() {
+        self.init(frame: CGRect.zeroRect)
     }
     
     func commonInit() {
