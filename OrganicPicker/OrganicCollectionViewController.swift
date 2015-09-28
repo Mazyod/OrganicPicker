@@ -54,7 +54,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     var cellNib: UINib? {
         didSet {
             let cell = cellNib?.instantiateWithOwner(nil, options: nil)[0] as! UICollectionViewCell
-            collectionViewCellReuseIdentifier = cell.reuseIdentifier
+            collectionViewCellReuseIdentifier = cell.reuseIdentifier!
             
             collectionView!.registerNib(
                 cellNib,
@@ -117,9 +117,9 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     private func scrollToSelectedIndexPath(animated animated: Bool) -> Bool {
         
-        let attributes = flowLayout.layoutAttributesForItemAtIndexPath(selectedIndexPath)
+        let attributes = flowLayout.layoutAttributesForItemAtIndexPath(selectedIndexPath) ?? UICollectionViewLayoutAttributes()
         
-        if attributes.center == CGPoint.zeroPoint {
+        if attributes.center == CGPoint.zero {
             return false
         }
         
