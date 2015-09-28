@@ -76,7 +76,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
     // MARK: - Initialization
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -87,7 +87,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     }
     
     convenience init() {
-        self.init(frame: CGRect.zeroRect)
+        self.init(frame: CGRect.zero)
     }
     
     func commonInit() {

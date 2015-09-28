@@ -74,14 +74,14 @@ class OrganicCollectionViewController: UICollectionViewController {
         let collectionView = self.collectionView!
         
         collectionView.backgroundColor = UIColor.clearColor()
-        collectionView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        collectionView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.scrollsToTop = false
         collectionView.delegate = self
         collectionView.dataSource = self
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -115,7 +115,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     // MARK: - Private methods
     
-    private func scrollToSelectedIndexPath(#animated: Bool) -> Bool {
+    private func scrollToSelectedIndexPath(animated animated: Bool) -> Bool {
         
         let attributes = flowLayout.layoutAttributesForItemAtIndexPath(selectedIndexPath)
         
@@ -157,7 +157,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
             collectionViewCellReuseIdentifier,
             forIndexPath: indexPath
-            ) as! UICollectionViewCell
+            ) 
         
         if let organicCell = cell as? OrganicPickerCell {
             organicCell.setOrganicItem(delegate.items[indexPath.item])
