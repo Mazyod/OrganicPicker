@@ -109,27 +109,34 @@ class OrganicCollectionViewController: UICollectionViewController {
         
         let attributes = flowLayout.layoutAttributesForItemAtIndexPath(selectedIndexPath) ?? UICollectionViewLayoutAttributes()
         
-        if attributes.center == CGPoint.zero {
+        guard attributes.center != CGPoint.zero else {
             return false
         }
         
+        let collectionView = self.collectionView!
+        
         let offset = CGPoint(
-            x: attributes.center.x - collectionView!.bounds.width / 2,
-            y: collectionView!.contentOffset.y
+            x: attributes.center.x - collectionView.bounds.width / 2,
+            y: collectionView.contentOffset.y
         )
         
-        collectionView!.setContentOffset(offset, animated: animated)
+        collectionView.setContentOffset(offset, animated: animated)
+        
         return true
     }
     
     private func scrollViewStopped() {
         
-        let xOffset = collectionView!.contentOffset.x
-        let containerWidth = flowLayout.itemSize.width + flowLayout.minimumInteritemSpacing
-        let roundedOffset = round((xOffset + (collectionView!.bounds.width - containerWidth)/2) / containerWidth) * containerWidth
-        let index = Int(round(roundedOffset / containerWidth))
+        let collectionView = self.collectionView!
+        var point = collectionView.contentOffset
+        point.x += collectionView.bounds.width / 2
         
-        delegate.organicCollectionViewStopped(atIndex: index)
+        guard let indexPath = collectionView.indexPathForItemAtPoint(point) else {
+            return
+        }
+        
+        selectedIndexPath = indexPath
+        delegate.organicCollectionViewStopped(atIndex: indexPath.item)
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate methods

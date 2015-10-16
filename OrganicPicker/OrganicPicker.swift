@@ -9,27 +9,13 @@
 import UIKit
 
 
-private extension CGRect {
-    
-    private var mid: CGPoint {
-        return CGPoint(x: midX, y: midY)
-    }
-    
-}
-
-@objc protocol OrganicPickerDataSource {
-    
-}
-
 @objc protocol OrganicPickerCell {
     func setOrganicItem(item: AnyObject)
 }
 
 class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
-    lazy var collectionViewController: OrganicCollectionViewController = {
-        OrganicCollectionViewController(delegate: self)
-    }()
+    lazy var collectionViewController: OrganicCollectionViewController = OrganicCollectionViewController(delegate: self)
     
     /* items are displayed within the picker. Can be anything */
     var items: [AnyObject] = [] {
@@ -38,8 +24,13 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         }
     }
     
-    var selectedIndex: Int = 0 {
+    var selectedIndex: Int = -1 {
         didSet {
+            
+            guard selectedIndex != oldValue else {
+                return
+            }
+            
             let indexPath = NSIndexPath(forItem: selectedIndex, inSection: 0)
             collectionViewController.selectedIndexPath = indexPath
         }
@@ -66,13 +57,9 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         }
     }
     
-    /** Organic picker can be customized by subclassing, delegation, or closures.
+    /** Organic picker can be customized by subclassing or closures.
      *  Name your poison, and name it wisely.
      */
-
-    /* Delegation */
-    var dataSource: OrganicPickerDataSource?
-    
     
     // MARK: - Initialization
     
@@ -91,6 +78,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     }
     
     func commonInit() {
+        
         clipsToBounds = true
         
         addSubview(collectionViewController.view)
@@ -123,7 +111,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
     func controlTapped(gesture: UITapGestureRecognizer) {
         
-        if items.count != 2 {
+        guard items.count == 2 else {
             return
         }
         
