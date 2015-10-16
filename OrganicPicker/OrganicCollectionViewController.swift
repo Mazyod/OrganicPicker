@@ -24,9 +24,9 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     var deferLayout = false
     
+    
     var selectedIndexPath: NSIndexPath = NSIndexPath() {
         didSet {
-            
             if !scrollToSelectedIndexPath(animated: true) {
                 deferLayout = true
             }
@@ -40,9 +40,9 @@ class OrganicCollectionViewController: UICollectionViewController {
     var collectionViewCellReuseIdentifier = "Cell"
 
     /* required UICollectionViewCell subclass to display your item */
-    var cellClass: AnyClass? {
+    var cellClass: AnyClass! {
         didSet {
-            collectionViewCellReuseIdentifier = cellClass!.description()
+            collectionViewCellReuseIdentifier = NSStringFromClass(cellClass)
             
             collectionView!.registerClass(
                 cellClass,
@@ -51,9 +51,9 @@ class OrganicCollectionViewController: UICollectionViewController {
         }
     }
     
-    var cellNib: UINib? {
+    var cellNib: UINib! {
         didSet {
-            let cell = cellNib?.instantiateWithOwner(nil, options: nil)[0] as! UICollectionViewCell
+            let cell = cellNib.instantiateWithOwner(nil, options: nil)[0] as! UICollectionViewCell
             collectionViewCellReuseIdentifier = cell.reuseIdentifier!
             
             collectionView!.registerNib(
@@ -66,6 +66,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     // MARK: - Init & Dealloc
     
     init(delegate: OrganicCollectionViewControllerDelegate) {
+        
         self.delegate = delegate
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         
@@ -96,17 +97,6 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        let itemLength = view.bounds.height
-        if itemLength != flowLayout.itemSize.height {
-            flowLayout.itemSize = CGSize(width: itemLength, height: itemLength)
-            flowLayout.invalidateLayout()
-            
-            // this allows the first/last element to be centered in the scrollView
-            let inset = (view.bounds.width - itemLength) / 2
-            collectionView!.contentInset = UIEdgeInsetsMake(0, inset, 0, inset)
-        }
-        
         
         if deferLayout && scrollToSelectedIndexPath(animated: false) {
             deferLayout = false
@@ -140,6 +130,24 @@ class OrganicCollectionViewController: UICollectionViewController {
         let index = Int(round(roundedOffset / containerWidth))
         
         delegate.organicCollectionViewStopped(atIndex: index)
+    }
+    
+    // MARK: - UICollectionViewFlowLayoutDelegate methods
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let itemLength = collectionView.bounds.height
+        return CGSize(width: itemLength, height: itemLength)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        
+        let bounds = collectionView.bounds
+        let itemLength = bounds.height
+        let controlWidth = bounds.width
+        let inset = (controlWidth - itemLength) / 2
+
+        return UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
     }
     
     // MARK: - UICollectionViewDataSource methods
