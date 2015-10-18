@@ -109,7 +109,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         
         let attributes = flowLayout.layoutAttributesForItemAtIndexPath(selectedIndexPath) ?? UICollectionViewLayoutAttributes()
         
-        guard attributes.center != CGPoint.zero else {
+        guard attributes.frame != CGRect.zero else {
             return false
         }
         
