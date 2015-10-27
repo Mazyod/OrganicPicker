@@ -17,9 +17,13 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
     lazy var collectionViewController: OrganicCollectionViewController = OrganicCollectionViewController(delegate: self)
     
-    /* items are displayed within the picker. Can be anything */
-    var items: [AnyObject] = [] {
+    var items: [String] = [] {
         didSet {
+            
+            guard items != oldValue else {
+                return
+            }
+            
             collectionViewController.collectionView?.reloadData()
         }
     }

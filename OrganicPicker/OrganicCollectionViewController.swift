@@ -11,7 +11,7 @@ import UIKit
 
 @objc protocol OrganicCollectionViewControllerDelegate {
     
-    var items: [AnyObject] { get }
+    var items: [String] { get }
     var selectedIndex: Int { get }
     
     func organicCollectionViewStopped(atIndex index: Int)
