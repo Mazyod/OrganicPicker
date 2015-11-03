@@ -35,6 +35,8 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
                 return
             }
             
+            accessibilityValue = items[selectedIndex]
+            
             let indexPath = NSIndexPath(forItem: selectedIndex, inSection: 0)
             collectionViewController.selectedIndexPath = indexPath
         }
@@ -83,6 +85,10 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
     func commonInit() {
         
+        isAccessibilityElement = true
+        accessibilityNavigationStyle = .Combined
+        accessibilityHint = NSLocalizedString("ACCESS_ORGANIC_PICKER_HINT", comment: "")
+        
         clipsToBounds = true
         
         addSubview(collectionViewController.view)
@@ -113,13 +119,10 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
     // MARK: - Action
     
-    func controlTapped(gesture: UITapGestureRecognizer) {
+    func controlTapped(gesture: UITapGestureRecognizer?) {
         
-        guard items.count == 2 else {
-            return
-        }
-        
-        selectedIndex = (selectedIndex + 1) % 2
+        // allow rolling through options for accessibility sake
+        selectedIndex = (selectedIndex + 1) % items.count
         sendActionsForControlEvents(.ValueChanged)
     }
 
