@@ -10,7 +10,7 @@ import UIKit
 
 
 @objc protocol OrganicPickerCell {
-    func setOrganicItem(item: AnyObject)
+    func setOrganicItem(_ item: AnyObject)
 }
 
 class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
@@ -37,7 +37,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
             
             accessibilityValue = items[selectedIndex]
             
-            let indexPath = NSIndexPath(forItem: selectedIndex, inSection: 0)
+            let indexPath = IndexPath(item: selectedIndex, section: 0)
             collectionViewController.selectedIndexPath = indexPath
         }
     }
@@ -50,7 +50,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
             oldValue?.removeFromSuperview()
             if let view = foregroundView {
                 view.frame = bounds
-                view.userInteractionEnabled = false
+                view.isUserInteractionEnabled = false
                 addSubview(view)
             }
         }
@@ -86,15 +86,15 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     func commonInit() {
         
         isAccessibilityElement = true
-        accessibilityNavigationStyle = .Combined
+        accessibilityNavigationStyle = .combined
         accessibilityHint = NSLocalizedString("ACCESS_ORGANIC_PICKER_HINT", comment: "")
         
         clipsToBounds = true
         
         addSubview(collectionViewController.view)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: "controlTapped:")
-        tapGesture.requireGestureRecognizerToFail(collectionViewController.collectionView!.panGestureRecognizer)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OrganicPicker.controlTapped(_:)))
+        tapGesture.require(toFail: collectionViewController.collectionView!.panGestureRecognizer)
         
         addGestureRecognizer(tapGesture)
     }
@@ -113,17 +113,17 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         foregroundView?.frame = bounds
         
         if let view = foregroundView {
-            bringSubviewToFront(view)
+            bringSubview(toFront: view)
         }
     }
     
     // MARK: - Action
     
-    func controlTapped(gesture: UITapGestureRecognizer?) {
+    func controlTapped(_ gesture: UITapGestureRecognizer?) {
         
         // allow rolling through options for accessibility sake
         selectedIndex = (selectedIndex + 1) % items.count
-        sendActionsForControlEvents(.ValueChanged)
+        sendActions(for: .valueChanged)
     }
 
     // MARK: - OrganicCollectionViewDelegate
@@ -131,7 +131,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     func organicCollectionViewStopped(atIndex index: Int) {
         
         selectedIndex = index
-        sendActionsForControlEvents(.ValueChanged)
+        sendActions(for: .valueChanged)
     }
     
 }

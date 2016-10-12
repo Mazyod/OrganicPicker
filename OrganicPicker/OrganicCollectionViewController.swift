@@ -25,7 +25,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     var deferLayout = false
     
     
-    var selectedIndexPath: NSIndexPath = NSIndexPath() {
+    var selectedIndexPath: IndexPath = IndexPath() {
         didSet {
             if !scrollToSelectedIndexPath(animated: true) {
                 deferLayout = true
@@ -44,7 +44,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         didSet {
             collectionViewCellReuseIdentifier = NSStringFromClass(cellClass)
             
-            collectionView!.registerClass(
+            collectionView!.register(
                 cellClass,
                 forCellWithReuseIdentifier: collectionViewCellReuseIdentifier
             )
@@ -53,10 +53,10 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     var cellNib: UINib! {
         didSet {
-            let cell = cellNib.instantiateWithOwner(nil, options: nil)[0] as! UICollectionViewCell
+            let cell = cellNib.instantiate(withOwner: nil, options: nil)[0] as! UICollectionViewCell
             collectionViewCellReuseIdentifier = cell.reuseIdentifier!
             
-            collectionView!.registerNib(
+            collectionView!.register(
                 cellNib,
                 forCellWithReuseIdentifier: collectionViewCellReuseIdentifier
             )
@@ -70,12 +70,12 @@ class OrganicCollectionViewController: UICollectionViewController {
         self.delegate = delegate
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         
-        flowLayout.scrollDirection = .Horizontal
+        flowLayout.scrollDirection = .horizontal
         
         let collectionView = self.collectionView!
         
-        collectionView.backgroundColor = UIColor.clearColor()
-        collectionView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        collectionView.backgroundColor = UIColor.clear
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.scrollsToTop = false
         collectionView.delegate = self
@@ -89,7 +89,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     // MARK: - View Lifecycle
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         view.frame = view.superview!.bounds
@@ -105,9 +105,9 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     // MARK: - Private methods
     
-    private func scrollToSelectedIndexPath(animated animated: Bool) -> Bool {
+    fileprivate func scrollToSelectedIndexPath(animated: Bool) -> Bool {
         
-        let attributes = flowLayout.layoutAttributesForItemAtIndexPath(selectedIndexPath) ?? UICollectionViewLayoutAttributes()
+        let attributes = flowLayout.layoutAttributesForItem(at: selectedIndexPath) ?? UICollectionViewLayoutAttributes()
         
         guard attributes.frame != CGRect.zero else {
             return false
@@ -125,29 +125,29 @@ class OrganicCollectionViewController: UICollectionViewController {
         return true
     }
     
-    private func scrollViewStopped() {
+    fileprivate func scrollViewStopped() {
         
         let collectionView = self.collectionView!
         var point = collectionView.contentOffset
         point.x += collectionView.bounds.width / 2
         
-        guard let indexPath = collectionView.indexPathForItemAtPoint(point) else {
+        guard let indexPath = collectionView.indexPathForItem(at: point) else {
             return
         }
         
         selectedIndexPath = indexPath
-        delegate.organicCollectionViewStopped(atIndex: indexPath.item)
+        delegate.organicCollectionViewStopped(atIndex: (indexPath as NSIndexPath).item)
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate methods
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         
         let itemLength = collectionView.bounds.height
         return CGSize(width: itemLength, height: itemLength)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         
         let bounds = collectionView.bounds
         let itemLength = bounds.height
@@ -159,23 +159,23 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     // MARK: - UICollectionViewDataSource methods
     
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return delegate.items.count
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            collectionViewCellReuseIdentifier,
-            forIndexPath: indexPath
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: collectionViewCellReuseIdentifier,
+            for: indexPath
             ) 
         
         if let organicCell = cell as? OrganicPickerCell {
-            organicCell.setOrganicItem(delegate.items[indexPath.item])
+            organicCell.setOrganicItem(delegate.items[indexPath.item] as AnyObject)
         }
         else {
             assertionFailure("Registered Cell must conform to OrganicPickerCell protocol")
@@ -186,14 +186,14 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     // MARK: - UIScrollViewDelegate methods
     
-    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
         if !decelerate {
             scrollViewStopped()
         }
     }
     
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollViewStopped()
     }
     
