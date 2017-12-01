@@ -119,7 +119,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
     // MARK: - Action
     
-    func controlTapped(_ gesture: UITapGestureRecognizer?) {
+    @objc func controlTapped(_ gesture: UITapGestureRecognizer?) {
         
         // allow rolling through options for accessibility sake
         selectedIndex = (selectedIndex + 1) % items.count
