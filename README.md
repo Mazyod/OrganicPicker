@@ -9,3 +9,9 @@ TODO
 ====
 
 + Fix an issue when the collectionView line spacing is non-zero
+
+
+Author
+====
+
+Maz (Mazyad Alabduljalil)
