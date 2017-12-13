@@ -105,7 +105,7 @@ class OrganicCollectionViewController: UICollectionViewController {
     
     // MARK: - Private methods
     
-    fileprivate func scrollToSelectedIndexPath(animated: Bool) -> Bool {
+    private func scrollToSelectedIndexPath(animated: Bool) -> Bool {
         
         let attributes = flowLayout.layoutAttributesForItem(at: selectedIndexPath) ?? UICollectionViewLayoutAttributes()
         
@@ -125,7 +125,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         return true
     }
     
-    fileprivate func scrollViewStopped() {
+    private func scrollViewStopped() {
         
         let collectionView = self.collectionView!
         var point = collectionView.contentOffset
@@ -136,7 +136,7 @@ class OrganicCollectionViewController: UICollectionViewController {
         }
         
         selectedIndexPath = indexPath
-        delegate.organicCollectionViewStopped(atIndex: (indexPath as NSIndexPath).item)
+        delegate.organicCollectionViewStopped(atIndex: indexPath.item)
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate methods
