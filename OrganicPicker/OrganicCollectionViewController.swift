@@ -175,7 +175,7 @@ class OrganicCollectionViewController: UICollectionViewController {
             ) 
         
         if let organicCell = cell as? OrganicPickerCell {
-            organicCell.setOrganicItem(delegate.items[indexPath.item] as AnyObject)
+            organicCell.setOrganicItem(delegate.items[indexPath.item] as Any)
         }
         else {
             assertionFailure("Registered Cell must conform to OrganicPickerCell protocol")

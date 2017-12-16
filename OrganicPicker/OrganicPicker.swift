@@ -10,7 +10,7 @@ import UIKit
 
 
 @objc protocol OrganicPickerCell {
-    func setOrganicItem(_ item: AnyObject)
+    func setOrganicItem(_ item: Any)
 }
 
 class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
