@@ -113,7 +113,7 @@ class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
         foregroundView?.frame = bounds
         
         if let view = foregroundView {
-            bringSubview(toFront: view)
+            bringSubviewToFront(view)
         }
     }
     
