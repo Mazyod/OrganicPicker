@@ -15,7 +15,7 @@ import UIKit
 
 class OrganicPicker: UIControl, OrganicCollectionViewControllerDelegate {
     
-    lazy var collectionViewController: OrganicCollectionViewController = OrganicCollectionViewController(delegate: self)
+    lazy var collectionViewController = OrganicCollectionViewController(delegate: self)
     
     var items: [String] = [] {
         didSet {
